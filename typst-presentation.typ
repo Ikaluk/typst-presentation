@@ -667,6 +667,7 @@ presentation/
     sum_(k=0)^n k & = 1 + ... + n \
                   & = (n(n+1)) / 2
   $```,
+
   pause,
   $
     mat(
@@ -676,13 +677,14 @@ presentation/
       10, 10, ..., 10;
     )
   $,
+
   ``` $ mat(
-      1, 2, ..., 10;
-      2, 2, ..., 10;
-      dots.v, dots.v, dots.down, dots.v;
-      10, 10, ..., 10;
-    ) $ ```,
-  pause
+    1, 2, ..., 10;
+    2, 2, ..., 10;
+    dots.v, dots.v, dots.down, dots.v;
+    10, 10, ..., 10;
+  ) $ ```,
+  pause,
 )
 
 #link("https://typst.app/docs/reference/symbols/sym/")
@@ -690,13 +692,263 @@ presentation/
 = Formatting & Styling
 == Page, Par, Text
 
-#set block(
-  
-)
+#alternatives[
+  ```
+  #set page(
+    paper: "a7",
+    
 
-sadf
+
+
+  )
+  ```
+][
+  ```
+  #set page(
+    paper: "a7",
+    header: [TITELTITEL #h(1fr) AUTHOR],
+    
+
+
+  )
+  ```
+][
+  ```
+  #set page(
+    paper: "a7",
+    header: [TITELTITEL #h(1fr) AUTHOR],
+    numbering: "1",
+    
+
+  )
+  ```
+][
+  ```
+  #set page(
+    paper: "a7",
+    header: [TITELTITEL #h(1fr) AUTHOR],
+    numbering: "1",
+    margin: (top: 5em, x: 1em),
+    
+  )
+  ```
+][
+  ```
+  #set page(
+    paper: "a7",
+    header: [TITELTITEL #h(1fr) AUTHOR],
+    numbering: "1",
+    margin: (top: 5em, x: 1em),
+    columns: 2,
+  )
+  ```
+]
+#v(0.7em)
+#alternatives(start: 6)[
+  ```
+  #set par(
+    justify: true,
+    
+
+
+  )
+  ```
+][
+  ```
+  #set par(
+    justify: true,
+    first-line-indent: 1em,
+    
+
+  )
+  ```
+][
+  ```
+  #set par(
+    justify: true,
+    first-line-indent: 1em,
+    spacing: 0.9em,
+    
+  )
+  ```
+][
+  ```
+  #set par(
+    justify: true,
+    first-line-indent: 1em,
+    spacing: 0.9em,
+    leading: 0.6em,
+  )
+  ```
+]
+
+#place(bottom, line(stroke: 0.5pt, length: 40%))
+
+#place(center + bottom, dx: 1em, box(
+  height: 68%,
+  width: 25.4%,
+  stroke: (left: 0.5pt, top: 0.5pt),
+  inset: (left: 1em, top: 1em, bottom: 0.5em),
+  align(left)[
+    #alternatives(start: 10)[
+      ```
+      #set text(
+        lang: "de",
+        
+
+
+      )
+      ```
+    ][
+      ```
+      #set text(
+        lang: "de",
+        size: 10pt,
+        
+
+      )
+      ```
+    ][
+      ```
+      #set text(
+        lang: "de",
+        size: 10pt,
+        font: "Inter",
+        
+      )
+      ```
+    ][
+      ```
+      #set text(
+        lang: "de",
+        size: 10pt,
+        font: "Inter",
+        weight: "light",
+      )
+      ```
+    ]
+    #v(0.7em)
+
+    ```
+    #lorem(50)
+
+    #lorem(20)
+    ```
+  ],
+))
+#{
+  set image(height: 100%)
+  show image: it => box(stroke: (thickness: 0.5pt, dash: "dashed"), it)
+  only(1, place(right + top, image("assets/page00.pdf")))
+  only(2, place(right + top, image("assets/page01.pdf")))
+  only(3, place(right + top, image("assets/page02.pdf")))
+  only(4, place(right + top, image("assets/page03.pdf")))
+  only(5, place(right + top, image("assets/page04.pdf")))
+  only(6, place(right + top, image("assets/page05.pdf")))
+  only(7, place(right + top, image("assets/page06.pdf")))
+  only(8, place(right + top, image("assets/page07.pdf")))
+  only(9, place(right + top, image("assets/page08.pdf")))
+  only(10, place(right + top, image("assets/page09.pdf")))
+  only(11, place(right + top, image("assets/page10.pdf")))
+  only(12, place(right + top, image("assets/page11.pdf")))
+  only(13, place(right + top, image("assets/page12.pdf")))
+}
 
 == Numbering
+
+#{
+  show grid.cell.where(y: 0): set align(center)
+  grid(
+    columns: (1fr, 1fr, 1fr, 1fr),
+    gutter: 1em,
+    inset: (x: 1em, y: 8pt),
+    grid.cell(colspan: 2)[#alternatives[~][`#set enum(numbering: "A)")`][`#set enum(numbering: "i.a.1.")`]],
+    grid.vline(),
+    grid.cell(colspan: 2)[#alternatives[~][`#set enum(numbering: "1.1")`][`#set enum(numbering: "I) a-1.")`]],
+
+    alternatives[
+      + foo
+      + bar
+        + qux
+          + boom
+        + quux
+        + quuux
+      + baz
+    ][
+      #set enum(numbering: "A)")
+      + foo
+      + bar
+        + qux
+          + boom
+        + quux
+        + quuux
+      + baz
+    ][
+      #set enum(numbering: "i.a.1.")
+      + foo
+      + bar
+        + qux
+          + boom
+        + quux
+        + quuux
+      + baz
+    ],
+
+    [
+      ```
+      + foo
+      + bar
+        + qux
+          + boom
+        + quux
+        + quuux
+      + baz
+      ```
+    ],
+
+    [
+      #set par(leading: 1em)
+      #alternatives[
+        *#text(1.4em)[Foo]*\
+        *#text(1.4em)[Bar]*\
+        *#text(1.2em)[Qux]*\
+        *Boom*\
+        *#text(1.2em)[Quux]*\
+        *#text(1.2em)[Quuux]*\
+        *#text(1.4em)[Baz]*\
+      ][
+        *#text(1.4em)[\1. Foo]*\
+        *#text(1.4em)[\2. Bar]*\
+        *#text(1.2em)[2.1 Qux]*\
+        *2.1.1 Boom*\
+        *#text(1.2em)[2.2 Quux]*\
+        *#text(1.2em)[2.3 Quuux]*\
+        *#text(1.4em)[\3. Baz]*\
+      ][
+        *#text(1.4em)[I) Foo]*\
+        *#text(1.4em)[II) Bar]*\
+        *#text(1.2em)[II) a. Qux]*\
+        *II) a-1. Boom*\
+        *#text(1.2em)[II) b. Quux]*\
+        *#text(1.2em)[II) c. Quuux]*\
+        *#text(1.4em)[III) Baz]*\
+      ]
+    ],
+
+    [
+      ```
+      = Foo
+      = Bar
+      == Qux
+      === boom
+      == quux
+      == quuux
+      = baz
+      ```
+    ],
+  )
+}
+
 == `show`-rules
 
 == Templates
