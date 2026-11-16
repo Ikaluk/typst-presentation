@@ -14,7 +14,11 @@
 #show cite: citesugar
 
 #import "@preview/dtree:0.1.1": dtree as dtree-old
-#let dtree(..args) = box(stroke: 2pt + gray, inset: (right: 9pt, rest: 0.5pt), radius: 0.5em, dtree-old(size: 1em, indent-width: 1em, ..args))
+#let dtree(..args) = box(stroke: 2pt + gray, inset: (right: 9pt, rest: 0.5pt), radius: 0.5em, dtree-old(
+  size: 1em,
+  indent-width: 1em,
+  ..args,
+))
 
 #set text(lang: "en")
 
@@ -68,7 +72,7 @@
 #set heading(numbering: none)
 
 #set raw(lang: "typ")
-#show link: it => if type(it.dest) == str { underline(it) } else { it }
+#show link: it => if type(it.dest) == str { underline(it) } else { it } // because of header's page dots
 
 //#show table.cell.where(y: 0): it => text(20pt, weight: "bold", it)
 #set table(
@@ -468,18 +472,18 @@ presentation/
 #only(1, place(left + top, dy: 2em, text(1em, box(
   ```bib
   @article{oswald2022detection,
-    title={Detection and classification methods for
-           animal sounds},
-    author={Oswald, Julie N and Erbe, Christine and 
-            Gannon, William L and Madhusudhana, Shyam and 
-            Thomas, Jeanette A},
+    title={Detection and classification methods for 
+            animal sounds},
+    author={Oswald, Julie N. and Erbe, Christine and 
+            Gannon, William L. and Madhusudhana, Shyam and 
+            Thomas, Jeanette A.},
     journal={Exploring animal behavior through sound},
     volume={1},
     pages={269--317},
     year={2022},
-    publisher={Springer International Publishing},
-    address={Cham, Switzerland}
-  } ```
+    publisher={Springer},
+    address={Cham}
+  } ```,
 ))))
 
 #only(1, place(right + top, align(left, dtree(```
@@ -490,13 +494,22 @@ presentation/
   main.typ
   fill=eastern | refs.bib
 ```))))
-#only("2-", place(right + top, align(left, dtree(```
+#only("2-5", place(right + top, align(left, dtree(```
 presentation/
   fill=gray|assets/
     fill=gray|sheep.png
   fill=eastern | main.pdf
   fill=eastern | main.typ
   refs.bib
+```))))
+#only("6-", place(right + top, align(left, dtree(```
+presentation/
+  fill=gray|assets/
+    fill=gray|sheep.png
+  fill=eastern | main.pdf
+  fill=eastern | main.typ
+  refs.bib
+  ussl.csl
 ```))))
 
 #grid(
@@ -533,63 +546,166 @@ presentation/
       *#text(1.4em)[Bibliography]*
       #bibliography("refs.bib", title: none, style: "apa")
     ])
+    #only(6, [
+      "Frequently, researchers describe and name animal
+      sounds based on their perception of the sound and
+      thus based on their own language." @oswald2022detection
+
+      *#text(1.4em)[Bibliography]*
+      #bibliography("refs.bib", title: none, style: "unified-style-sheet-for-linguistics.csl")
+    ])
+    #only(7, [
+      #cite(<oswald2022detection>, form: "prose") claim that researchers describe and name animal sounds based on their perception of the sound and thus based on their own language.
+
+      *#text(1.4em)[Bibliography]*
+      #bibliography("refs.bib", title: none, style: "unified-style-sheet-for-linguistics.csl")
+    ])
   ],
   [
     #only(2, [
-    ``` 
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+      ```
+
+
+
+
+
+
+
+
+
+
       #bibliography("refs.bib")```
     ])
     #only(3, [
       ``` "Frequently,
-       researchers 
-       describe and name 
-       animal sounds 
-       based on their 
-       perception of the 
-       sound and thus 
-       based on their own language."
-
+      researchers 
+      describe and name 
+      animal sounds 
+      based on their 
+      perception of the 
+      sound and thus 
+      based on their 
+      own language."
 
       #bibliography("refs.bib")```
     ])
     #only(4, [
       ``` "Frequently,
-       researchers 
-       describe and name 
-       animal sounds 
-       based on their 
-       perception of the 
-       sound and thus 
-       based on their own language." @oswald2022detection
+      researchers 
+      describe and name 
+      animal sounds 
+      based on their 
+      perception of the 
+      sound and thus 
+      based on their 
+      own language." @oswald2022detection
 
       #bibliography("refs.bib")```
     ])
     #only(5, box(width: 15cm)[
       ``` "Frequently,
-       researchers 
-       describe and name 
-       animal sounds 
-       based on their 
-       perception of the 
-       sound and thus 
-       based on their own language." @oswald2022detection
+      researchers 
+      describe and name 
+      animal sounds 
+      based on their 
+      perception of the 
+      sound and thus 
+      based on their 
+      own language." @oswald2022detection
 
       #bibliography("refs.bib", style: "apa")```
+    ])
+    #only(6, box(width: 14cm)[
+      ``` "Frequently,
+      researchers 
+      describe and name 
+      animal sounds 
+      based on their 
+      perception of the 
+      sound and thus 
+      based on their 
+      own language." @oswald2022detection
+
+      #bibliography("refs.bib", style: "ussl.csl")```
+
+      #text(0.9em, link("https://github.com/citation-style-language/styles"))
+    ])
+    #only(7, box(width: 14cm)[
+      #place(dy: -2.3em, dx: -4.8em, box(width: 10cm)[`#cite(<oswald2022detection>, 
+          form: "prose")` ])
+      ```
+      claim that 
+      researchers 
+      describe and name 
+      animal sounds
+      based on their 
+      perception of the 
+      sound and thus 
+      based on their 
+      own language.
+
+      #bibliography("refs.bib", style: "ussl.csl")```
+
+      #text(0.9em, link("https://github.com/citation-style-language/styles"))
     ])
   ],
 )
 
 == Maths
 
-= 
-==
+#grid(
+  columns: (1fr, 1fr),
+  gutter: 1em,
+  [What is $sum_(k=0)^n k$?], ``` What is $sum_(k=0)^n k$?```,
+  pause,
+
+  $
+    sum_(k=0)^n k & = 1 + ... + n \
+                  & = (n(n+1)) / 2
+  $,
+  ``` $
+    sum_(k=0)^n k & = 1 + ... + n \
+                  & = (n(n+1)) / 2
+  $```,
+  pause,
+  $
+    mat(
+      1, 2, ..., 10;
+      2, 2, ..., 10;
+      dots.v, dots.v, dots.down, dots.v;
+      10, 10, ..., 10;
+    )
+  $,
+  ``` $ mat(
+      1, 2, ..., 10;
+      2, 2, ..., 10;
+      dots.v, dots.v, dots.down, dots.v;
+      10, 10, ..., 10;
+    ) $ ```,
+  pause
+)
+
+#link("https://typst.app/docs/reference/symbols/sym/")
+
+= Formatting & Styling
+== Page, Par, Text
+
+#set block(
+  
+)
+
+sadf
+
+== Numbering
+== `show`-rules
+
+== Templates
+
+= Editoren
+
+= Comparison to #LaTeX
+
+= Useful packages
+== numbly
+== citesugar
+== cetz, fletcher, lilaq
