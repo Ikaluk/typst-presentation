@@ -25,7 +25,7 @@
 #set heading(numbering: none)
 
 #set raw(lang: "typ")
-#show link: it => if type(it.dest) == str { text(navy, underline(it)) } else { it } // because of header's page dots
+#show link: it => if type(it.dest) == str { underline(it) } else { it } // because of header's page dots
 
 //#show table.cell.where(y: 0): it => text(20pt, weight: "bold", it)
 #set table(
@@ -1072,7 +1072,7 @@ presentation/
       #link("https://github.com/Ikaluk/typst-presentation")
       ```
       #v(0.5em)
-      #text(0.8em, box(width: 14cm, alternatives(
+      #text(0.8em, navy, box(width: 14cm, alternatives(
         "https://github.com/Ikaluk/typst-presentation",
         link("https://github.com/Ikaluk/typst-presentation"),
       )))
@@ -1156,9 +1156,266 @@ presentation/
 #place(right + top, only("18", box(inset: (y: -1.5em, right: 1em), image("assets/image-9.png"))))
 
 
-= Editoren
+= Editors
+
+== Web-editor
+#pause
+- #link("https://typst.app/") (requires account) #pause
+- *Live compilation* #pause
+- unlimited collaborations #pause
+- converter from LaTeX, Word, Markdown #pause
+- Click-to-source
+
+#empty-slide(box(inset: (x: -2em, y: -2em), image("assets/image-11.png")))
+
+
+== #link("https://code.visualstudio.com/")[vscode]/#link("https://vscodium.com/")[vscodium] + #link("https://github.com/Myriad-Dreamin/tinymist")[tinymist]
+#pause
+#place(right + top)[
+  #set align(left)
+  #set text(gray)
+  *#text(gray, 1.2em)[Web-editor]*
+
+  - #text(weight: "bold")[Live compilation]
+  - unlimited collaborations
+  - converter from LaTeX, Word, Markdown
+  - Click-to-source
+]
+- everything is just like in the web app #pause
+- local, offline, customizable #pause
+- no spell check
+
+
+#empty-slide(box(inset: (x: -2em, y: -3.2em), image("assets/image-10.png")))
+
 
 = Comparison to #LaTeX
+
+
+== Preamble
+
+#{
+  set text(14pt)
+  box(inset: (left: 10em, top: -3em), figure(
+    table(
+      columns: (1fr, 1.6fr),
+      align: left,
+      typst, LaTeX,
+      pause, raw("Hello World!", lang: "typ"),
+      pause,
+      {
+        uncover("2-", raw("\documentclass{article}\n", lang: "tex"))
+        only("3", text(11.5pt, weight: "bold", raw(
+          "\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry} % edit margins of paper
+\usepackage{setspace} % edit line spacing
+\usepackage{fancyhdr} % header, footer
+\usepackage{titlesec} % edit format of titles
+\usepackage[dvipsnames]{xcolor} % colors
+\usepackage{amsmath} % math tools
+\usepackage{amssymb} % math symbols
+\usepackage{amsthm} % thereoms
+\usepackage{mathtools} % math tools
+\usepackage{nameref}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage[shortlabels]{enumitem} % enumerations
+\usepackage{lastpage} % get number of last page\n",
+          lang: "tex",
+        )))
+        uncover("2-", raw("\begin{document}
+Hello World!
+\end{document}", lang: "tex"))
+      },
+    ),
+  ))
+}
+
+
+
+== Syntax
+
+#figure(
+  table(
+    columns: (1fr, 1fr),
+    align: left,
+    inset: (y: 13pt),
+
+    table.cell(inset: (y: 7pt), typst), table.cell(inset: (y: 7pt), LaTeX),
+    [
+      #pause
+      Three modes:
+      #v(-13pt)
+      #grid(
+        columns: 3,
+        column-gutter: 1em,
+        row-gutter: 0.5em,
+        pause, [1. Markup], `[...]`,
+        `#let n = [*Typst!*]`, pause, [2. Code],
+        `#...`, `#(1 + 2)`, pause,
+        [3. Math], `$...$`, `$sqrt(-1)$ is $i$`,
+        pause,
+      )
+    ],
+    {
+      [Various environments, macros for everything.\ ]
+      pause
+      raw(lang: "tex", "\begin{minipage}{...}...\end{minipage}\n")
+      pause
+      raw(lang: "tex", "\\newcommand{\cmd}{def}")
+    },
+    pause,
+    [consistent syntax based on these modes & package compatibility],
+    pause,
+    [varying syntax across different packages,\ confusing arguments in `{}[]{}{}`],
+    pause,
+    [real programming language: `#if, #for, #let`],
+    pause,
+    [requires packages (`expl3`) for scripting],
+  ),
+)
+
+
+== Basic Functions
+#{
+  show table.cell.where(x: 1): set raw(lang: "tex")
+  set text(size: 12pt)
+  table(
+    columns: (1fr, 1fr),
+    align: left,
+
+    table.header(typst, LaTeX),
+    [`*strong*` or `#strong[strong]`], [`\textbf{strong}`],
+    [`_emphasis_` or `#emph[emphasis]`], [`\textit{emphasis}` or `\emph{emphasis}`],
+    [#raw("`print(1)`") or `#raw("print(1)")`], [`\texttt{print(1)}`],
+    [`https://typst.app/`], [`\url{https://typst.app/}`],
+    [`<intro>`], [`\label{intro}`],
+    [`@intro`], [`\ref{intro}`],
+    [`@key`], [`\cite{key}`],
+    [`= Heading`], [`\section{Heading}`],
+    [`== Heading`], [`\subsection{Heading}`],
+    [`=== Heading`], [`\subsubsection{Heading}`],
+    [`- item`], [`\begin{itemize}\item...\end{itemize}`],
+    [`+ item`], [`\begin{enumerate}\item...\end{enumerate}`],
+    [`$x^2$`], [`$x^2$` (inline)],
+    [`$ x^2 $`], [`\[x^2\]` or `\begin{equation}`],
+    [`~`], [`~` (non-breaking space)],
+    [`---`], [`---`],
+    [`--`], [`--`],
+    [`\`], [`\\`],
+    [`// line comment`], [`% comment`],
+    [`/* block comment */`], [(no equivalent)],
+    [`#outline()`], [`\tableofcontents`],
+    [`#footnote[...]`], [`\footnote{...}`],
+    [`#bibliography("file.bib", style: "ieee")`], [`\bibliography{file}\bibliographystyle{plain}`],
+    [`#underline[...]`], [`\underline{...}`],
+    [`#upper[...]`], [`\uppercase{...}`],
+    [`#text(fill: red)[...]`], [`\textcolor{red}{...}`],
+    [`#highlight(fill: yellow)[...]`], [`\colorbox{yellow}{...}`],
+    [`#set par(first-line-indent: 0pt)`], [`\noindent`],
+    [`#pagebreak()`], [`\newpage`],
+    [`#h(1cm)`], [`\hspace{1cm}`],
+    [`#v(1cm)`], [`\vspace{1cm}`],
+    [`#h(1fr)`], [`\hfill`],
+    [`#v(1fr)`], [`\vfill`],
+    [`#line(length: 100%)`], [`\hrule`],
+    [`#quote[...]`], [`\begin{quote}...\end{quote}`],
+    raw("```...```"), [`\begin{verbatim}...\end{verbatim}`],
+    [`#figure(table(...))`], [`\begin{table}...\end{table}`],
+    [`#figure(image(...))`], [`\begin{figure}...\end{figure}`],
+    [`#image("img.png", width: 5cm)`], [`\includegraphics[width=5cm]{img}`],
+    [`#box[...]`], [`\begin{minipage}{...}...\end{minipage}`],
+    [`#box(stroke: 1pt)[...]`], [`\fbox{...}`],
+    [`#box(width: 5cm)[...]`], [`\parbox{5cm}{...}`],
+    [`#align(center)[...]`], [`\begin{center}...\end{center}`],
+    [`#columns(2)[...]`], [`\begin{multicols}{2}...\end{multicols}`],
+    [`#canvas[...] (via cetz)`], [`\begin{tikzpicture}...\end{tikzpicture}`],
+    [`$ ... $ (block, with spaces)`], [`\begin{equation}...\end{equation}`],
+    [`$ ... & ... \ $`], [`\begin{align}...\end{align}`],
+    [`$cases(...)$`], [`\begin{cases}...\end{cases}`],
+    [`$mat(...)$`], [`\begin{matrix}...\end{matrix}`],
+    [`#show: ... or #let ...`], [`\renewcommand{\...}{...}`],
+    [`#let x = ...`], [`\def\x{...}`],
+    [`#include "file.typ"`], [`\input{file}`],
+    [`#import "@preview/pkg:1.0.0": *`], [`\usepackage{pkg}`],
+  )
+}
+
+== Tables
+
+#{
+  show table.cell.where(x: 1): set raw(lang: "tex")
+
+  table(
+    columns: (1fr, 1.2fr),
+    align: left,
+
+    typst,
+    {
+      h(1.75em)
+      LaTeX
+    },
+    `#table(
+  columns: (1fr, 1fr),
+  align: left,
+  table.hline(),
+  [*Header 1*], [*Header 2*],
+  table.hline(),
+  [Cell A], [Cell B],
+  [Cell C], [Cell D],
+  table.hline(),
+)`,
+    `
+\begin{tabular}{ll}
+  \hline
+  \textbf{Header 1} & \textbf{Header 2} \\
+  \hline
+  Cell A & Cell B \\
+  Cell C & Cell D \\
+  \hline
+\end{tabular}
+  `,
+    table.hline(),
+  )
+}
+
+
+// CONTINUE HERE
+
+== Schreibumgebung
+#table(
+  columns: (1fr, 1fr),
+  align: left,
+  typst, LaTeX,
+  pause, [inkrementelle Live-Kompilierung],
+  [Pseudo-Live-Kompilierung mit Kompilierungslimit im Online-Editor], pause,
+  [ungefähr verständliche Fehlermeldungen], [kryptische Fehlermeldungen],
+  pause, [einheitliche Dokumentation],
+  [viele dezentrale Dokumentationen],
+)
+
+
+== Verwendung im akademischen Bereich
+
+#table(
+  columns: (1fr, 1fr),
+  align: left,
+  typst, LaTeX,
+  pause,
+  table.cell(inset: (
+    right: 1em,
+  ))[Der #typst\-Quellcode wird bisher nur vom _International Journal of Interactive Multimedia and Artificial Intelligence (IJIMAI)_ akzeptiert.
+    Bei einigen Journals können auch PDFs eingereicht werden.],
+  [Der #LaTeX\-Quellcode wird von den allermeisten Journals und Konferenzen akzeptiert.],
+  pause,
+  [Alles ist möglich, gar nicht so kompliziert, manches ist noch in der Entwicklung.],
+  [#LaTeX ist etabliert, es gibt zu allem Templates und Lösungen (auch wenn diese teilweise sehr kompliziert sind).],
+)
+
+
+
+
 
 = Useful packages
 == numbly
