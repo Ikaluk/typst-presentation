@@ -22,6 +22,22 @@
 
 #set text(lang: "en")
 
+#set heading(numbering: none)
+
+#set raw(lang: "typ")
+#show link: it => if type(it.dest) == str { text(navy, underline(it)) } else { it } // because of header's page dots
+
+//#show table.cell.where(y: 0): it => text(20pt, weight: "bold", it)
+#set table(
+  stroke: (x, y) => (
+    top: if y <= 1 { 0.8pt } else { 0pt },
+    bottom: 0.8pt,
+  ),
+  inset: (y: 8pt),
+)
+
+
+
 #show: dewdrop-theme.with(
   aspect-ratio: "16-9",
   footer: self => self.info.title,
@@ -59,7 +75,7 @@
     subtitle: [An alternative for #LaTeX and Word],
     author: [Merlin Jonathan Fischer],
     date: datetime.today(),
-    //institution: [Goethe Universität Frankfurt],
+    institution: link("https://github.com/Ikaluk/typst-presentation"),
     contact: [fischeme\@tcd.ie],
 
     logo: image("assets/Logo-Goethe-University-Frankfurt-am-Main.svg.png", height: 2cm),
@@ -69,19 +85,6 @@
   ),
 )
 
-#set heading(numbering: none)
-
-#set raw(lang: "typ")
-#show link: it => if type(it.dest) == str { underline(it) } else { it } // because of header's page dots
-
-//#show table.cell.where(y: 0): it => text(20pt, weight: "bold", it)
-#set table(
-  stroke: (x, y) => (
-    top: if y <= 1 { 0.8pt } else { 0pt },
-    bottom: 0.8pt,
-  ),
-  inset: (y: 8pt),
-)
 
 /////////////////////////
 
@@ -159,8 +162,8 @@ presentation/
   ],
   [
     #v(8em)
-    #only("1", raw("#image(\"assets/sheep.png\")"))
-    #only("2", raw("#image(\"assets/sheep.png\", width: 10cm)"))
+    #only("1", raw("\n #image(\"assets/sheep.png\")"))
+    #only("2", box(width: 14cm, raw("\n #image(\"assets/sheep.png\", width: 10cm)")))
     #only("3-", box(
       ``` #figure(
         image("assets/sheep.png", width: 10cm),
@@ -862,9 +865,9 @@ presentation/
     columns: (1fr, 1fr, 1fr, 1fr),
     gutter: 1em,
     inset: (x: 1em, y: 8pt),
-    grid.cell(colspan: 2)[#alternatives[~][`#set enum(numbering: "A)")`][`#set enum(numbering: "i.a.1.")`]],
+    grid.cell(colspan: 2)[#alternatives[` `][`#set enum(numbering: "A)")    `][`#set enum(numbering: "i.a.1.")`]],
     grid.vline(),
-    grid.cell(colspan: 2)[#alternatives[~][`#set enum(numbering: "1.1")`][`#set enum(numbering: "I) a-1.")`]],
+    grid.cell(colspan: 2)[#alternatives[` `][`#set enum(numbering: "1.1")    `][`#set enum(numbering: "I) a-1.")`]],
 
     alternatives[
       + foo
@@ -949,7 +952,149 @@ presentation/
   )
 }
 
-== `show`-rules
+== `#show`-rules
+
+#grid(
+  columns: (1.6fr, 1fr),
+  column-gutter: 1em,
+  [
+
+    #[
+      #set par(leading: 0.5em)
+      #pause
+      `#show "the lazy dog": smallcaps`\ #pause
+      `#show " and": [ &]`\ #pause
+      `#show strong: underline`\ #pause
+      `#show "brown": set text(orange.darken(50%))`\ #pause
+      #v(-0.8em)`#show emph: it => [🦊 #it 🦊]`\ #pause
+      `#show regex("\(.*\)"): set text(style: "italic")`\ #pause
+      `#show regex("[Tt]he"): set text(1.4em)`\
+    ]
+    #alternatives(start: 1)[
+      *The Rest of the Story* (Jennifer Clauson)
+
+      The _quick brown fox_ jumps over the lazy dog.\
+      He lands head first on a rotting maple log.\
+      Knocked unconscious, fox sleeps with shallow breath\
+      until the lazy dog awakes and worries him to death.\
+    ][
+      #show "the lazy dog": smallcaps
+      *The Rest of the Story* (Jennifer Clauson)
+
+      The _quick brown fox_ jumps over the lazy dog.\
+      He lands head first on a rotting maple log.\
+      Knocked unconscious, fox sleeps with shallow breath\
+      until the lazy dog awakes and worries him to death.\
+    ][
+      #show "the lazy dog": smallcaps
+      #show " and": [ &]
+      *The Rest of the Story* (Jennifer Clauson)
+
+      The _quick brown fox_ jumps over the lazy dog.\
+      He lands head first on a rotting maple log.\
+      Knocked unconscious, fox sleeps with shallow breath\
+      until the lazy dog awakes and worries him to death.\
+    ][
+      #show "the lazy dog": smallcaps
+      #show " and": [ &]
+      #show strong: underline
+      *The Rest of the Story* (Jennifer Clauson)
+
+      The _quick brown fox_ jumps over the lazy dog.\
+      He lands head first on a rotting maple log.\
+      Knocked unconscious, fox sleeps with shallow breath\
+      until the lazy dog awakes and worries him to death.\
+    ][
+      #show "the lazy dog": smallcaps
+      #show " and": [ &]
+      #show strong: underline
+      #show "brown": set text(orange.darken(50%))
+      *The Rest of the Story* (Jennifer Clauson)
+
+      The _quick brown fox_ jumps over the lazy dog.\
+      He lands head first on a rotting maple log.\
+      Knocked unconscious, fox sleeps with shallow breath\
+      until the lazy dog awakes and worries him to death.\
+    ][
+      #show "the lazy dog": smallcaps
+      #show " and": [ &]
+      #show strong: underline
+      #show "brown": set text(orange.darken(50%))
+      #show emph: it => [🦊 #it 🦊]
+      *The Rest of the Story* (Jennifer Clauson)
+
+      The _quick brown fox_ jumps over the lazy dog.\
+      He lands head first on a rotting maple log.\
+      Knocked unconscious, fox sleeps with shallow breath\
+      until the lazy dog awakes and worries him to death.\
+    ][
+      #show "the lazy dog": smallcaps
+      #show " and": [ &]
+      #show strong: underline
+      #show "brown": set text(orange.darken(50%))
+      #show emph: it => [🦊 #it 🦊]
+      #show regex("\(.*\)"): set text(style: "italic")
+      *The Rest of the Story* (Jennifer Clauson)
+
+      The _quick brown fox_ jumps over the lazy dog.\
+      He lands head first on a rotting maple log.\
+      Knocked unconscious, fox sleeps with shallow breath\
+      until the lazy dog awakes and worries him to death.\
+    ][
+      #show "the lazy dog": smallcaps
+      #show " and": [ &]
+      #show strong: underline
+      #show "brown": set text(orange.darken(50%))
+      #show emph: it => [🦊 #it 🦊]
+      #show regex("\(.*\)"): set text(style: "italic")
+      #show regex("[Tt]he"): set text(1.4em)
+      *The Rest of the Story* (Jennifer Clauson)
+
+      The _quick brown fox_ jumps over the lazy dog.\
+      He lands head first on a rotting maple log.\
+      Knocked unconscious, fox sleeps with shallow breath\
+      until the lazy dog awakes and worries him to death.\
+    ]
+  ],
+  [
+    #pause
+    #place(dy: -2em)[```
+      #show link: set text(navy)
+      #show link: underline
+      #link("https://github.com/Ikaluk/typst-presentation")
+      ```
+      #text(0.8em, box(width: 14cm, link("https://github.com/Ikaluk/typst-presentation")))
+
+    ]
+
+    #pause
+
+    #v(5em)
+    #line(length: 110%)
+
+    #[
+      #set text(0.9em)
+      #box(width: 14cm, ```
+      #show table.cell.where(y: 0): strong
+      ```)
+      #show table.cell.where(y: 0): strong
+      #table(
+        columns: 2,
+        stroke: 1pt,
+        [language], [barking],
+        [French], [ouaf ouaf],
+        [Spanish], [guau guau],
+        [Indonesian], [guk guk],
+      )
+      #v(-0.5em)
+      #text(0.7em)[@oswald2022detection[272]]\
+      For more on table design, see below.
+    ]
+  ],
+)
+
+
+
 
 == Templates
 
@@ -961,3 +1106,5 @@ presentation/
 == numbly
 == citesugar
 == cetz, fletcher, lilaq
+
+= Working setup
