@@ -1058,12 +1058,24 @@ presentation/
   ],
   [
     #pause
-    #place(dy: -2em)[```
+    #place(dy: -2em)[
+      #set par(spacing: 0.7em)
+      #alternatives(start: 9)[```
+
+
+
+      ```][```
       #show link: set text(navy)
       #show link: underline
+      ```]
+      ```
       #link("https://github.com/Ikaluk/typst-presentation")
       ```
-      #text(0.8em, box(width: 14cm, link("https://github.com/Ikaluk/typst-presentation")))
+      #v(0.5em)
+      #text(0.8em, box(width: 14cm, alternatives(
+        "https://github.com/Ikaluk/typst-presentation",
+        link("https://github.com/Ikaluk/typst-presentation"),
+      )))
 
     ]
 
@@ -1074,21 +1086,36 @@ presentation/
 
     #[
       #set text(0.9em)
-      #box(width: 14cm, ```
+      #box(width: 14cm, alternatives(start: 11, ```
+      
+      ```, ```
       #show table.cell.where(y: 0): strong
-      ```)
-      #show table.cell.where(y: 0): strong
-      #table(
-        columns: 2,
-        stroke: 1pt,
-        [language], [barking],
-        [French], [ouaf ouaf],
-        [Spanish], [guau guau],
-        [Indonesian], [guk guk],
-      )
+      ```))
+      #alternatives[
+        #table(
+          columns: 2,
+          stroke: 1pt,
+          [language], [barking],
+          [French], [ouaf ouaf],
+          [Spanish], [guau guau],
+          [Indonesian], [guk guk],
+        )
+      ][
+        #show table.cell.where(y: 0): strong
+
+        #table(
+          columns: 2,
+          stroke: 1pt,
+          box(height: 0.66em)[language], [barking],
+          [French], [ouaf ouaf],
+          [Spanish], [guau guau],
+          [Indonesian], [guk guk],
+        )
+      ]
       #v(-0.5em)
       #text(0.7em)[@oswald2022detection[272]]\
-      For more on table design, see below.
+      #pause
+      _For more on table design, see below._
     ]
   ],
 )
@@ -1097,6 +1124,37 @@ presentation/
 
 
 == Templates
+#pause
+
+- #link("https://typst.app/universe/")[Typst Universe] #pause
+- Papers #pause
+  - _cogsci-conference_ #pause
+  - _athena-tu-darmstadt-thesis_ #pause
+- CVs #pause
+  - _basic-resume_ #pause
+- Presentations #pause
+  - _touying_ #pause #pause #pause #pause
+  - _diatypst_ #pause #pause
+- Posters #pause
+  - _peace-of-posters_ #pause #pause
+  - _pollux_ #pause
+
+
+#place(right+top, only(2, image("assets/image-13.png")))
+#place(right + top, only("4", box(inset: (y: -1.5em), image("assets/cogsci.png", height: 1fr))))
+#place(right + top, only("5", box(inset: (y: -1.5em), image("assets/tudapub_prev-01.png", height: 1fr))))
+#place(right + top, only("7", box(inset: (y: -1.5em), image("assets/example-resume.png", height: 1fr))))
+
+#place(right + top, only("9", box(inset: (top: 1.5em), image("assets/image.png"))))
+#place(right + top, only("10", box(inset: (top: 1.5em), image("assets/image-1.png"))))
+#place(right + top, only("11", box(inset: (top: 1.5em), image("assets/image-2.png"))))
+#place(right + top, only("12", box(inset: (top: 1.5em), image("assets/image-3.png"))))
+#place(right + top, only("13", box(inset: (top: 1em), image("assets/image-4.png"))))
+#place(right + top, only("14", box(inset: (top: 1em), image("assets/image-5.png"))))
+#place(right + top, only("16", box(inset: (y: -1.5em, right: 1em), image("assets/image-6.png"))))
+#place(right + top, only("17", box(inset: (y: -1.5em, right: 1em), image("assets/image-8.png"))))
+#place(right + top, only("18", box(inset: (y: -1.5em, right: 1em), image("assets/image-9.png"))))
+
 
 = Editoren
 
