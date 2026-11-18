@@ -27,7 +27,7 @@
 #set raw(lang: "typ")
 #show link: it => if type(it.dest) == str { underline(it) } else { it } // because of header's page dots
 
-//#show table.cell.where(y: 0): it => text(20pt, weight: "bold", it)
+//#show table.cell.where(y: 0): it => text(weight: "bold", it)
 #set table(
   stroke: (x, y) => (
     top: if y <= 1 { 0.8pt } else { 0pt },
@@ -1193,6 +1193,7 @@ presentation/
 
 
 == Preamble
+#show table.cell.where(y: 0): it => text(weight: "bold", it)
 
 #{
   set text(14pt)
@@ -1381,36 +1382,36 @@ Hello World!
 }
 
 
-// CONTINUE HERE
 
-== Schreibumgebung
+== Writing environment
 #table(
   columns: (1fr, 1fr),
   align: left,
   typst, LaTeX,
-  pause, [inkrementelle Live-Kompilierung],
-  [Pseudo-Live-Kompilierung mit Kompilierungslimit im Online-Editor], pause,
-  [ungefähr verständliche Fehlermeldungen], [kryptische Fehlermeldungen],
-  pause, [einheitliche Dokumentation],
-  [viele dezentrale Dokumentationen],
+  pause, [incremental live compilation],
+  [pseudo-live compilation with a compilation limit in the online editor], pause,
+  [somewhat understandable error messages], [cryptic error messages],
+  pause, [consistent documentation],
+  [many decentralized documentation sources],
 )
 
 
-== Verwendung im akademischen Bereich
+== Use in academic settings
+
+
 
 #table(
   columns: (1fr, 1fr),
+  inset: (right: 0.5em),
   align: left,
   typst, LaTeX,
   pause,
-  table.cell(inset: (
-    right: 1em,
-  ))[Der #typst\-Quellcode wird bisher nur vom _International Journal of Interactive Multimedia and Artificial Intelligence (IJIMAI)_ akzeptiert.
-    Bei einigen Journals können auch PDFs eingereicht werden.],
-  [Der #LaTeX\-Quellcode wird von den allermeisten Journals und Konferenzen akzeptiert.],
+  [The #typst source code is currently accepted only by the _International Journal of Interactive Multimedia and Artificial Intelligence (IJIMAI)_.
+    Some journals also accept PDF submissions.],
+  [The #LaTeX source code is accepted by the vast majority of journals and conferences.],
   pause,
-  [Alles ist möglich, gar nicht so kompliziert, manches ist noch in der Entwicklung.],
-  [#LaTeX ist etabliert, es gibt zu allem Templates und Lösungen (auch wenn diese teilweise sehr kompliziert sind).],
+  [Anything is possible; it's not that complicated -- some things are still under development.],
+  [#LaTeX is well-established; there are templates and solutions for everything (even if some of them are very complicated).],
 )
 
 
@@ -1419,7 +1420,128 @@ Hello World!
 
 = Useful packages
 == numbly
+
+#link("https://typst.app/universe/package/numbly/")
+
+```
+#import "@preview/numbly:0.1.0": numbly
+#set heading(numbering: numbly(
+  "Appendix {1:A}.", // use {level:format} to specify the format
+  "{1:A}.{2}.", // if format is not specified, arabic numbers will be used
+  "Step {3}.", // here, we only want the 3rd level
+))
+
+= Guide
+== Installation
+=== Download
+=== Install
+== Usage
+```
+
+#place(center+bottom, dx: 5em, image("assets/image-12.png"))
+
 == citesugar
+
+
+#grid(
+  columns: 3,
+  column-gutter: 25pt,
+  `#import "citesugar.typ": *
+#show cite: citesugar
+`,
+  `@oswald2022detection
+@oswald2022detection[p:]
+@oswald2022detection[a:]
+@oswald2022detection[y:]
+@oswald2022detection[b:]
+@oswald2022detection[ps:]
+@oswald2022detection[as:]
+`,
+  [
+    #set text(0.8em)
+    @oswald2022detection\
+    @oswald2022detection[p:]\
+    @oswald2022detection[a:]\
+    @oswald2022detection[y:]\
+    @oswald2022detection[b:]\
+    @oswald2022detection[ps:]\
+    @oswald2022detection[as:]\
+  ],
+)
 == cetz, fletcher, lilaq
 
+== touying
+== dtree
+== arborly
+== eggs
+
 = Working setup
+
+
+```
+#import "@preview/eggs:0.6.0": *
+#show: eggs.with(
+  auto-judges: (),
+)
+#import abbreviations: *
+#import "@preview/arborly:0.3.2": * // needs function "a"
+#import "@preview/numbly:0.1.0": numbly
+#import "citesugar.typ": *
+#show cite: citesugar
+
+#import "../functions.typ": *
+
+#let autor = "Merlin Jonathan Fischer"
+#let titel = "Wordhood of Noun Incorporation by Ph(r)ase in Inuit and Hindi"
+#set document(author: autor, title: titel)
+#let datum = datetime.today().display("[day].[month].[year]")
+
+
+#set text(
+  lang: "en",
+  size: 11pt,
+)
+
+#set enum(full: true, numbering: numbly("{1:1.}", "{2:i.}"))
+
+#set heading(numbering: "1.1")
+#show heading: it => block(
+  above: 2.2em,
+  below: 1.5em,
+  it,
+)
+
+#set page(
+  margin: 2.5cm,
+  numbering: "1",
+  number-align: right,
+)
+
+#show table.cell.where(y: 0): strong
+#set table(
+  stroke: (x, y) => ( 
+    top: if y <= 1 { 0.8pt } else { 0pt },
+    bottom: 0.8pt
+  ),
+)
+#show table: it => {
+  set par(leading: 0.8em)
+  it
+}
+#show figure.caption: it => {
+  set par(leading: 0.8em)
+  it
+}
+
+#let original_example(..args) = example(..args)
+#let example(..args) = {
+  set par(leading: 0.8em)
+  original_example(..args)
+}
+#let hab = abbreviation[hab][habitual]
+
+```
+
+https://sitandr.github.io/typst-examples-book/book/
+
+// delete unused images, packages 
