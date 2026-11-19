@@ -1,10 +1,7 @@
 #import "@preview/touying:0.7.4": *
 #import themes.dewdrop: *
 
-#import "functions.typ": *
-
 #import "@preview/numbly:0.1.0": numbly
-
 
 #import "@preview/eggs:0.8.0": *
 #import abbreviations: *
@@ -19,6 +16,12 @@
   indent-width: 1em,
   ..args,
 ))
+
+#import "@preview/fletcher:0.6.0" as fletcher: diagram, edge, node
+#import "@preview/lilaq:0.6.0" as lq
+#import "@preview/booktyps:0.1.1": booktabs
+
+///
 
 #set text(lang: "en")
 
@@ -36,6 +39,47 @@
   inset: (y: 8pt),
 )
 
+
+#let typst = {
+  set text(
+    size: 1.05em,
+    font: "Buenard",
+    weight: "bold",
+    fill: rgb("#239dad"),
+  )
+  box({
+    text("t")
+    text("y")
+    h(0.035em)
+    text("p")
+    h(-0.025em)
+    text("s")
+    h(-0.015em)
+    text("t")
+  })
+}
+
+#let LaTeX = {
+  let A = (
+    offset: (
+      x: -0.33em,
+      y: -0.3em,
+    ),
+    size: 0.7em,
+  )
+  let T = (
+    x_offset: -0.12em,
+  )
+  let E = (
+    x_offset: -0.2em,
+    y_offset: 0.23em,
+    size: 1em,
+  )
+  let X = (
+    x_offset: -0.1em,
+  )
+  [L#h(A.offset.x)#text(size: A.size, baseline: A.offset.y)[A]#h(T.x_offset)T#h(E.x_offset)#text(size: E.size, baseline: E.y_offset)[E]#h(X.x_offset)X]
+}
 
 
 #show: dewdrop-theme.with(
@@ -690,7 +734,7 @@ presentation/
   pause,
 )
 
-#link("https://typst.app/docs/reference/symbols/sym/")
+#link("https://typst.app/docs/reference/symbols/sym/") #h(1fr) #link("https://typst.app/docs/reference/math/")
 
 = Formatting & Styling
 == Page, Par, Text
@@ -1081,21 +1125,36 @@ presentation/
 
     #pause
 
-    #v(5em)
+    #v(4.6em)
     #line(length: 110%)
+    #v(-0.4em)
 
     #[
+      #box(width: 14cm, text(0.7em, alternatives(start: 11, ```
+      
+      ```,```
+      
+      ```,```
+      #import "@preview/booktyps:0.1.1": booktabs
+      ```)))
       #set text(0.9em)
       #box(width: 14cm, alternatives(start: 11, ```
       
+
+
       ```, ```
+
       #show table.cell.where(y: 0): strong
+      ```, ```
+      #show table: booktabs
+      #show table.cell.where(y: 1): strong
       ```))
+      
       #alternatives[
         #table(
           columns: 2,
           stroke: 1pt,
-          [language], [barking],
+          table.header([language], [barking]),
           [French], [ouaf ouaf],
           [Spanish], [guau guau],
           [Indonesian], [guk guk],
@@ -1106,16 +1165,27 @@ presentation/
         #table(
           columns: 2,
           stroke: 1pt,
-          box(height: 0.66em)[language], [barking],
+          table.header(box(height: 0.66em)[language], [barking]),
           [French], [ouaf ouaf],
           [Spanish], [guau guau],
           [Indonesian], [guk guk],
         )
+      ][
+        #import "@preview/booktyps:0.1.1": booktabs
+        #show table: booktabs
+        #show table.cell.where(y: 1): strong
+        #table(
+          columns: 2,
+          stroke: 1pt,
+          table.header(box(height: 0.66em)[language], [barking]),
+          [French], [ouaf ouaf],
+          [Spanish], [guau guau],
+          [Indonesian], [guk guk],
+        )
+        #place(right+bottom, dx:1em, dy:-6.1em, text(0.8em)[`table.header(...)`])
       ]
       #v(-0.5em)
-      #text(0.7em)[@oswald2022detection[272]]\
-      #pause
-      _For more on table design, see below._
+      #place(bottom+right, dx: 1em, text(0.6em)[@oswald2022detection[272]])
     ]
   ],
 )
@@ -1169,7 +1239,10 @@ presentation/
 #empty-slide(box(inset: (x: -2em, y: -2em), image("assets/image-11.png")))
 
 
-== #link("https://code.visualstudio.com/")[vscode]/#link("https://vscodium.com/")[vscodium] + #link("https://github.com/Myriad-Dreamin/tinymist")[tinymist]
+== vscode/vscodium + tinymist
+- #link("https://code.visualstudio.com/")
+- #link("https://vscodium.com/")
+- #link("https://github.com/Myriad-Dreamin/tinymist")
 #pause
 #place(right + top)[
   #set align(left)
@@ -1417,18 +1490,17 @@ Hello World!
 
 
 
-
 = Useful packages
-== numbly
+== Numbering: `numbly`
 
-#link("https://typst.app/universe/package/numbly/")
+#place(right + top, link("https://typst.app/universe/package/numbly"))
 
 ```
 #import "@preview/numbly:0.1.0": numbly
 #set heading(numbering: numbly(
-  "Appendix {1:A}.", // use {level:format} to specify the format
-  "{1:A}.{2}.", // if format is not specified, arabic numbers will be used
-  "Step {3}.", // here, we only want the 3rd level
+  "Appendix {1:A}.",                // use {level:format} to specify the format
+  "{1:A}.{2}.",      // if format is not specified, arabic numbers will be used
+  "Step {3}.",                              // here, we only want the 3rd level
 ))
 
 = Guide
@@ -1438,110 +1510,429 @@ Hello World!
 == Usage
 ```
 
-#place(center+bottom, dx: 5em, image("assets/image-12.png"))
+#place(center + bottom, dx: 5em, dy: -1em, image("assets/image-12.png", height: 6cm))
 
-== citesugar
+== References: `citesugar`
+
+#place(right + top, link("https://typst.app/universe/package/citesugar"))
+
+#{
+  set text(0.88em)
+  grid(
+    columns: (2fr, 1.1fr, 0.7fr),
+    column-gutter: 1em,
+    [
+      #only("1", place(right + top, dx: 11.79em, dy: 3.35em, align(left)[
+        `@oswald2022detection`
+        #v(8.08em)
+        #text(0.8em)[`@oswald2022detection[p.~272]`]
+      ]))
+      ```
+
+      // native citation:
+
+      #cite(<oswald2022detection>)
+      #cite(<oswald2022detection>, form: "prose")
+      #cite(<oswald2022detection>, form: "author")
+      #cite(<oswald2022detection>, form: "year")
+      ```
+      #v(-0.3em)
+      #text(0.5em, `#cite(<oswald2022detection>, form: "author")~#cite(<oswald2022detection>, form: "year")`)\
+      #text(0.5em, `#cite(<oswald2022detection>, form: "author")’s~(#cite(<oswald2022detection>, form: "year"))`)\
+      #text(0.9em, `#cite(<oswald2022detection>, form: "author")’s`)
+
+      #v(1.1em)
+      #text(0.9em, `#cite(<oswald2022detection>, supplement: [p~272])`)
+      #text(0.7em, `#cite(<oswald2022detection>, form: "author", supplement: [p~272])`)
+    ],
+    pause,
+    [
+      #box(`#import "@preview/citesugar:0.2.0": *`, width: 14cm)
+      #v(-0.7em)
+      ```
+      #show cite: citesugar
+
+      @oswald2022detection
+      @oswald2022detection[p:]
+      @oswald2022detection[a:]
+      @oswald2022detection[y:]
+      @oswald2022detection[b:]
+      @oswald2022detection[ps:]
+      @oswald2022detection[as:]
+      ```
+      \
+      #v(-0.8em)
+      #set text(0.8em)
+      #set par(leading: 1em)
+      ```
+      @oswald2022detection[p.~272]
+      @oswald2022detection[p:p.~272]
+      ```
+    ],
+
+    only("1-")[
+      #v(3.5em)
+      #set text(0.86em)
+      @oswald2022detection\
+      @oswald2022detection[p:]\
+      @oswald2022detection[a:]\
+      @oswald2022detection[y:]\
+      @oswald2022detection[b:]\
+      @oswald2022detection[ps:]\
+      @oswald2022detection[as:]\
+      \
+      #set text(0.8em)
+      #set par(leading: 1em)
+      @oswald2022detection[p.~272]\
+      @oswald2022detection[p:p.~272]\
+    ],
+  )
+}
+
+== Tables: `booktyps`
+
+#place(top + right, link("https://typst.app/universe/package/booktyps"))
 
 
 #grid(
-  columns: 3,
-  column-gutter: 25pt,
-  `#import "citesugar.typ": *
-#show cite: citesugar
-`,
-  `@oswald2022detection
-@oswald2022detection[p:]
-@oswald2022detection[a:]
-@oswald2022detection[y:]
-@oswald2022detection[b:]
-@oswald2022detection[ps:]
-@oswald2022detection[as:]
-`,
+  columns: (1fr, auto),
+  box(inset: (bottom: -2em))[
+    #set text(0.7em)
+    ```
+    #import "@preview/booktyps:0.1.1": booktabs
+    #show table: booktabs
+    #show table.cell.where(y: 1): strong
+
+    #table(
+      columns: 4,
+      align: (left, center+horizon, center, right),
+      
+      table.header([Month], [Season], [Long month], [Days]),
+
+      [January], table.cell(rowspan: 2)[winter], [yes], [31],
+      [February], [no], [28],
+      table.hline(end: 2),
+      [March], table.cell(rowspan: 3)[spring], [yes], [31],
+      [April], [no], [30],
+      [May], [yes], [31],
+      table.hline(end: 2),
+      [June], table.cell(rowspan: 1)[summer], [no], [30],
+
+      table.footer([*Total*], [], [], [181]),
+    )
+    ```
+  ],
   [
-    #set text(0.8em)
-    @oswald2022detection\
-    @oswald2022detection[p:]\
-    @oswald2022detection[a:]\
-    @oswald2022detection[y:]\
-    @oswald2022detection[b:]\
-    @oswald2022detection[ps:]\
-    @oswald2022detection[as:]\
+    #show table: booktabs
+    #show table.cell.where(y: 1): strong
+
+    #table(
+      columns: 4,
+      align: (left, center + horizon, center, right),
+
+      table.header([Month], [Season], [Long month], [Days]),
+
+      [January], table.cell(rowspan: 2)[winter], [yes], [31],
+      [February], [no], [28],
+      table.hline(end: 2),
+      [March], table.cell(rowspan: 3)[spring], [yes], [31],
+      [April], [no], [30],
+      [May], [yes], [31],
+      table.hline(end: 2),
+      [June], table.cell(rowspan: 1)[summer], [no], [30],
+
+      table.footer([*Total*], [], [], [181]),
+    )
+
   ],
 )
-== cetz, fletcher, lilaq
 
-== touying
-== dtree
-== arborly
-== eggs
-
-= Working setup
+== Graphics: `cetz`
+#place(right + top, link("https://typst.app/universe/package/cetz"))
 
 
-```
-#import "@preview/eggs:0.6.0": *
-#show: eggs.with(
-  auto-judges: (),
-)
-#import abbreviations: *
-#import "@preview/arborly:0.3.2": * // needs function "a"
-#import "@preview/numbly:0.1.0": numbly
-#import "citesugar.typ": *
-#show cite: citesugar
-
-#import "../functions.typ": *
-
-#let autor = "Merlin Jonathan Fischer"
-#let titel = "Wordhood of Noun Incorporation by Ph(r)ase in Inuit and Hindi"
-#set document(author: autor, title: titel)
-#let datum = datetime.today().display("[day].[month].[year]")
-
-
-#set text(
-  lang: "en",
-  size: 11pt,
+#grid(
+  columns: (1fr, 1fr, 1fr),
+  align: center,
+  {
+    image("assets/image-14.png", width: 80%)
+    image("assets/image-17.png", width: 73%)
+  },
+  {
+    image("assets/image-15.png", width: 80%)
+    image("assets/image-18.png", width: 86%)
+  },
+  {
+    image("assets/image-16.png", width: 71%)
+    image("assets/image-19.png", width: 80%)
+  },
 )
 
-#set enum(full: true, numbering: numbly("{1:1.}", "{2:i.}"))
 
-#set heading(numbering: "1.1")
-#show heading: it => block(
-  above: 2.2em,
-  below: 1.5em,
-  it,
+== Diagrams: `fletcher`
+#place(right + top, link("https://typst.app/universe/package/fletcher"))
+
+
+
+
+#grid(
+
+  gutter: 1em,
+  [`#import "@preview/fletcher:0.6.0" as fletcher: diagram, edge, node`],
+  [
+    #set text(0.8em)
+    ```
+    #let hom = edge.with(in-math: true)
+    #diagram($
+      G hom(f, ->) hom("d", pi, ->>) & im(f) \
+      G slash ker(f) hom("ur", tilde(f), "hook-->")
+    $)
+    ```
+  ],
+
+  text(0.75em, ```
+  #diagram(
+    node-stroke: .1em,
+    node-fill: gradient.radial(blue.lighten(90%), blue, center: (30%, 20%), radius: 80%),
+    spacing: 4em,
+    node((-0.85, 0),  `open(path)`, fill: none, stroke: none),      edge("-|>"),
+    node((0, 0), `reading`, radius: 2em),      edge(`read()`, "-|>"),
+    node((1, 0), `eof`, radius: 2em),      edge(`close()`, "-|>"),
+    node((2, 0), `closed`, radius: 2em, extrude: (-2.5, 0)),
+    edge((0, 0), `read()`, "--|>", loop: top, size: 3em),
+    edge((0, 0), (2, 0), `close()`, "-|>", bend: -40deg),
+  )
+  ```),
+)
+#place(right + bottom, [
+  #set text(0.5em)
+  #diagram(
+    node-stroke: .1em,
+    node-fill: gradient.radial(blue.lighten(90%), blue, center: (30%, 20%), radius: 80%),
+    spacing: 4em,
+    node((-0.85, 0), `open(path)`, fill: none, stroke: none),
+    edge("-|>"),
+    node((0, 0), `reading`, radius: 2em),
+    edge(`read()`, "-|>"),
+    node((1, 0), `eof`, radius: 2em),
+    edge(`close()`, "-|>"),
+    node((2, 0), `closed`, radius: 2em, extrude: (-2.5, 0)),
+    edge((0, 0), `read()`, "--|>", loop: top, size: 3em),
+    edge((0, 0), (2, 0), `close()`, "-|>", bend: -40deg),
+  )
+])
+
+#place(top + right, dy: 3em, [
+  #let hom = edge.with(in-math: true)
+  #diagram(
+    spacing: 2em,
+    $
+                     G hom(f, ->) hom("d", pi, ->>) & im(f) \
+      G slash ker(f) hom("ur", tilde(f), "hook-->")
+    $,
+  )
+])
+
+== Plots: `lilaq`
+#place(right + top, link("https://typst.app/universe/package/lilaq"))
+
+
+#grid(
+  columns: (1fr, auto),
+  align: (left, right),
+  gutter: 1em,
+  ```
+  #import "@preview/lilaq:0.6.0" as lq
+
+  #lq.diagram(
+    lq.plot((0, 1, 2, 3, 4), (3, 5, 4, 2, 3))
+  )
+  ```,
+  {
+    set text(0.6em)
+    lq.diagram(
+      lq.plot((0, 1, 2, 3, 4), (3, 5, 4, 2, 3)),
+    )
+  },
+
+  [
+    #set text(0.9em)
+    ```
+    #let x = lq.linspace(0, 10, num: 30)
+    #lq.diagram( lq.stem(
+      x,
+      x.map(calc.cos),
+      color: orange,
+      mark: "d",
+      base: -0.25,
+      base-stroke: black,
+    ) )
+    ```
+  ],
+  [
+    #set text(0.6em)
+    #let x = lq.linspace(0, 10, num: 30)
+
+    #lq.diagram(
+      lq.stem(
+        x,
+        x.map(calc.cos),
+        color: orange,
+        mark: "d",
+        base: -0.25,
+        base-stroke: black,
+      ),
+    )
+  ],
 )
 
-#set page(
-  margin: 2.5cm,
-  numbering: "1",
-  number-align: right,
-)
 
-#show table.cell.where(y: 0): strong
-#set table(
-  stroke: (x, y) => ( 
-    top: if y <= 1 { 0.8pt } else { 0pt },
-    bottom: 0.8pt
-  ),
-)
-#show table: it => {
-  set par(leading: 0.8em)
-  it
-}
-#show figure.caption: it => {
-  set par(leading: 0.8em)
-  it
-}
+== Slides: `touying`
+#place(top + right, link("https://typst.app/universe/package/touying"))
 
-#let original_example(..args) = example(..args)
-#let example(..args) = {
-  set par(leading: 0.8em)
-  original_example(..args)
-}
-#let hab = abbreviation[hab][habitual]
+#columns(2)[
+  ```
+  #import "@preview/touying:0.8.0": *
+  #import themes.simple: *
 
-```
+  #show: simple-theme.with(
+    aspect-ratio: "16-9",
+    footer: [Simple slides],
+  )
 
-https://sitandr.github.io/typst-examples-book/book/
+  #title-slide[...]
+  #outline-slide()
 
-// delete unused images, packages 
+  = Section
+  == New Slide
+  #focus-slide[...]
+  == Dynamic slides
+
+  On slide 1 #pause
+
+  Appears on slide 2
+
+  #meanwhile Already on slide 1
+
+  #uncover("1")[*Only* on slide 1]
+  #only("2-3")[*Only* on slide 2-3]
+  #alternatives[Slide 1][S. 2][S. 3]
+  ```
+
+  _works in maths, cetz, fletcher_
+]
+
+
+
+= How to write a document
+== Workflow
+#place(top + right)[*(click on any _`keyword`_ for reference)*]
+#columns(2)[
+  #set par(justify: false)
+  #set list(marker: [◦])
+  #let lnk(dest, body) = {
+    show underline.where(stroke: auto): it => it.body
+    link(dest, body)
+  }
+
+  #pause
+
+  0. Prepare #lnk("https://typst.app/docs/reference/model/bibliography/")[`refs.bib`, `#bibliography`], #lnk("https://typst.app/universe/package/citesugar")[`citesugar`]
+
+  #pause
+
+  + Write everything in markdown
+    - #link("https://typst.app/docs/reference/model/heading/")[`= heading`]
+    - #lnk("https://typst.app/docs/reference/model/strong/")[`*strong*`]
+    - #lnk("https://typst.app/docs/reference/model/emph/")[`_emph_`]
+    - #lnk("https://typst.app/docs/reference/model/enum/")[`+ enum`]
+    - #lnk("https://typst.app/docs/reference/model/list/")[`- list`]
+    - #lnk("https://typst.app/docs/reference/model/terms/")[`/ terms`]
+    - put #lnk("https://typst.app/docs/reference/model/table/")[`#table`] and #lnk("https://typst.app/docs/reference/visualize/image/")[`#image`] in #lnk("https://typst.app/docs/reference/model/figure/")[`#figure`]
+    - #lnk("https://typst.app/docs/reference/foundations/label/")[`<label>`] and #lnk("https://typst.app/docs/reference/model/ref/")[`@reference`] elements
+    - add #lnk("https://typst.app/universe/search/?kind=packages")[_packages_] on the go
+  #colbreak()
+
+  #pause
+
+  2. add #lnk("https://typst.app/docs/reference/model/title/")[`#title`], #lnk("https://typst.app/docs/reference/model/outline/")[`#outline`]
+
+  #pause
+
+  + #lnk("https://typst.app/docs/tutorial/formatting/")[_Format_] and #lnk("https://typst.app/docs/reference/styling/")[_style_] everything as needed
+    #table(
+      columns: (1fr, 1fr),
+      lnk("https://typst.app/docs/reference/styling/")[`#set`],
+      lnk("https://typst.app/docs/reference/styling/")[`#show`],
+      lnk("https://typst.app/docs/reference/model/document/")[`#document`],
+      lnk("https://typst.app/universe/search/?kind=templates")[_templates_],
+      [#lnk("https://typst.app/docs/reference/layout/page/")[`#page`], #lnk("https://typst.app/docs/reference/model/par/")[`#par`]],
+      lnk("https://typst.app/universe/search/?kind=packages")[_packages_],
+      table.cell(colspan: 2, align(
+        center,
+        [#lnk("https://typst.app/docs/reference/text/text/")[`#text`], #lnk("https://typst.app/docs/reference/model/table/")[`#table`], #lnk("https://typst.app/docs/reference/model/heading/")[`#heading`]],
+      )),
+      [#lnk("https://typst.app/docs/reference/model/enum/")[`#enum`], #lnk("https://typst.app/docs/reference/text/raw/")[`#raw`]],
+      lnk("https://typst.app/docs/reference/model/link/")[`#link`],
+    )
+
+  #pause
+
+  + #lnk("https://typst.app/docs/reference/layout/")[_Layout_] and position elements with #lnk("https://typst.app/docs/reference/layout/align/")[`#align`], #lnk("https://typst.app/docs/reference/layout/columns/")[`#columns`], #lnk("https://typst.app/docs/reference/layout/grid/")[`#grid`], #lnk("https://typst.app/docs/reference/layout/place/")[`#place`], #lnk("https://typst.app/docs/reference/layout/move/")[`#move`]
+]
+
+
+
+
+== A possible preamble
+
+#columns(2)[
+  #set text(0.8em)
+
+  ```
+  #import "@preview/numbly:0.1.0": numbly
+  #import "@preview/citesugar:0.2.0": *
+  #import "@preview/booktyps:0.1.1": booktabs
+  // more packages
+
+  #set document(author: "AUTHOR", title: "TITLE") //
+  #let date = datetime.today().display("[day].[month].[year]") // for further use
+
+  #set page(
+    margin: (top: 3cm),
+    header: [HEADER],
+    numbering: "1 / 1",
+    // ...
+  )
+
+  #set par(justify: true)
+  #set text(
+    lang: "en",
+    size: 11pt,
+    // ...
+  )
+
+  #set enum(full: true, numbering: numbly("{1:1.}", "{2:i.}"))
+  #set heading(numbering: "1.1")
+
+  #set raw(lang: "py")
+
+  #show cite: citesugar
+
+  #show table: booktabs
+  #show table.cell.where(y:1): strong
+
+  #show link: underline
+  ```
+]
+
+== Further References
+
+- #link("https://typst.app/docs/tutorial/")
+- #link("https://sitandr.github.io/typst-examples-book/book/")
+- #link("https://typst.app/docs/reference/")
+
+
+// delete unused images, packages
+
+//#bibliography("refs.bib")
