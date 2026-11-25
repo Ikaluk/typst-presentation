@@ -1528,9 +1528,9 @@ Hello World!
     columns: (2fr, 1.1fr, 0.7fr),
     column-gutter: 1em,
     [
-      #only("1", place(right + top, dx: 11.79em, dy: 3.35em, align(left)[
+      #only("1", place(right + top, dx: 11.79em, dy: 3.36em, align(left)[
         `@oswald2022detection`
-        #v(8.08em)
+        #v(8.07em)
         #text(0.8em)[`@oswald2022detection[p.~272]`]
       ]))
       ```
