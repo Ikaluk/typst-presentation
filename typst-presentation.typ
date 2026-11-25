@@ -146,7 +146,7 @@
   gutter: 8pt,
   [
     #pause
-    - typesetting programme for documents
+    - typesetting program for documents
     #pause
     - wysiwym#footnote[what you see is what you mean]
     #pause
@@ -168,7 +168,7 @@
 
     #meanwhile #raw("= Introduction") \ #v(4pt)
     #raw("== Was ist #typst?")\
-    #only("2-", raw("- typesetting programme for documents"))\
+    #only("2-", raw("- typesetting program for documents"))\
     #only("3-", raw("- wysiwym#footnote[what you see is what you mean]"))\
     #only("4-", raw("- highly customisable typesetting layout with a focus on academic publications"))\ #v(4pt)
     #only("5-", raw("=== But what is different?"))\
@@ -662,7 +662,7 @@ presentation/
 
       #bibliography("refs.bib", style: "apa")```
     ])
-    #only(6, box(width: 14cm)[
+    #only(6, [
       ``` "Frequently,
       researchers 
       describe and name 
@@ -675,9 +675,12 @@ presentation/
 
       #bibliography("refs.bib", style: "ussl.csl")```
 
+      #v(-1.5em)  
+      #align(right, text(0.7em)[(Unified Style Sheet for Linguistics)])
+
       #text(0.9em, link("https://github.com/citation-style-language/styles"))
     ])
-    #only(7, box(width: 14cm)[
+    #only(7, [
       #place(dy: -2.3em, dx: -4.8em, box(width: 10cm)[`#cite(<oswald2022detection>, 
           form: "prose")` ])
       ```
@@ -693,6 +696,9 @@ presentation/
 
       #bibliography("refs.bib", style: "ussl.csl")```
 
+      #v(-1.5em)
+      #align(right, text(0.7em)[(Unified Style Sheet for Linguistics)])
+      
       #text(0.9em, link("https://github.com/citation-style-language/styles"))
     ])
   ],
